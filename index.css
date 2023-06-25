@@ -77,5 +77,36 @@ body {
     border: solid 1px #333;
     color: black;
     box-shadow: 5px 5px 15px 1px rgb(51, 51, 51, 0.5);
+}   
+
+@media (max-width: 675px) {
+    .calculadora {
+        width: 400px;
+        height: 600px;
+    }
+
+    .calculadora .display {
+        font-size: 0.9rem;
+        height: 70px;
+    }
+
+    .key {
+        font-size: 1.2rem;
+    }
 }
 
+@media (max-width: 465px) {
+    .calculadora {
+        width: 300px;
+        height: 450px;
+    }
+
+    .calculadora .display {
+        height: 50px;
+        font-size: 0.7rem;
+    }
+
+    .key {
+        font-size: 1rem;
+    }
+}
