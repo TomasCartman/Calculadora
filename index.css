@@ -79,6 +79,10 @@ body {
     box-shadow: 5px 5px 15px 1px rgb(51, 51, 51, 0.5);
 }   
 
+.func {
+    background-color: #413b46;
+}
+
 @media (max-width: 675px) {
     .calculadora {
         width: 400px;
