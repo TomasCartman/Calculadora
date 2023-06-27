@@ -17,6 +17,8 @@ function numberSetOnClick() {
         numKey.onclick = () => {
             numberHandler(numKey.innerHTML)
         }
+        numKey.onmousedown = () => numKey.style['box-shadow'] = 'none'
+        numKey.onmouseup = () => numKey.style['box-shadow'] = '5px 5px 15px 1px #333'
     })
 }
 
@@ -26,6 +28,8 @@ function funcSetOnClick() {
         func.onclick = () => {
             funcHandler(func.innerHTML)
         }
+        func.onmousedown = () => func.style['box-shadow'] = 'none'
+        func.onmouseup = () => func.style['box-shadow'] = '5px 5px 15px 1px #333'
     })
 }
 
@@ -34,7 +38,9 @@ function operationSetOnClick() {
     inputOperation.forEach( op => {
         op.onclick = () => {
             operationHandler(op.innerHTML)
-        }  
+        }
+        op.onmousedown = () => op.style['box-shadow'] = 'none'
+        op.onmouseup = () => op.style['box-shadow'] = '5px 5px 15px 1px rgb(51, 51, 51, 0.5)'
     })
 }
 
@@ -45,7 +51,7 @@ function keySetOnPress() {
             numberHandler(key)
         } else if(isFunc(key)) {
             funcHandler(key)
-        } else if(key === '/' || key === '*' || key === '-' || key === '+' || key === '=' || key === 'Enter') {
+        } else if(key === '/' || key === '*' || key === '-' || key === '+' || key === '%' || key === '=' || key === 'Enter') {
             if(key === '*') key = 'X'
             if(key === 'Enter') key = '='
             operationHandler(key)
@@ -87,19 +93,20 @@ function numberHandler(num) {
 }
 
 function operationHandler(operation) {
+    const arr = calculator.displayArray
     if(operation !== '=' && operation !== '%') {
-        const lastIndex = calculator.displayArray.length-2
-        if(isOperator(calculator.displayArray[lastIndex])) {
-            calculator.displayArray[lastIndex] = operation
+        const lastIndex = arr.length-2
+        if(isOperator(arr[lastIndex])) {
+            arr[lastIndex] = operation
         } else {
-            calculator.displayArray.push(' ')
-            calculator.displayArray.push(operation)
-            calculator.displayArray.push(' ')
+            arr.push(' ')
+            arr.push(operation)
+            arr.push(' ')
         }
         updateDisplay()
     } else if(operation === '%') {
-        const percentage = calculatePercentage()
-        // this will takes some time
+        const percentage = calculatePercentage(arr)
+        updateDisplay()
     } else {
         calculate()
     }
@@ -193,8 +200,22 @@ function removeEmptySpacesArray(arr, opPosition) {
         arr.pop()
 }
 
-function calculatePercentage() {
+function calculatePercentage(arr) {
+    if(arr.length > 0) {
+        let stringArray = arr.toString()
+        stringArray = stringArray.replaceAll(',', '')
+        const arrayToCalculate = stringArray.split(' ')
 
+        const value = arrayToCalculate[arrayToCalculate.length-1] / 100
+        for(let i = 0; i < arrayToCalculate[arrayToCalculate.length-1].length; i++) {
+            arr.pop()
+        }
+        const stringValue = value.toString()
+        const valueArray = [...stringValue]
+        valueArray.forEach( char => {
+            arr.push(char)
+        })
+    }
 }
 
 
