@@ -46,7 +46,6 @@ function operationSetOnClick() {
 
 function keySetOnPress() {
     const keyboardKeys= [...document.querySelector('.keyboard').children]
-    console.log(keyboardKeys)
     document.onkeydown = event => {
         let key = event.key
         if(key === '*') key = 'X'
@@ -63,7 +62,6 @@ function keySetOnPress() {
         keyboardKeys.forEach( el => {
             if(el.innerHTML === key) {
                 el.style['box-shadow'] = 'none'
-                console.log(el.innerHTML, 'none')
             }
         })
     }
@@ -76,10 +74,8 @@ function keySetOnPress() {
             if(el.innerHTML === key) {
                 if(isOperator(key) || key === '=' || key === 'Enter') {
                     el.style['box-shadow'] = '5px 5px 15px 1px rgb(51, 51, 51, 0.5)'
-                    console.log(el.innerHTML, '5px 5px 15px 1px rgb(51, 51, 51, 0.5)') 
                 } else {
                     el.style['box-shadow'] = '5px 5px 15px 1px #333'
-                    console.log(el.innerHTML, '5px 5px 15px 1px #333') 
                 } 
             }
         })
