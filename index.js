@@ -5,6 +5,7 @@ const calculator = {
 }
 
 const isOperator = i => i === '%' || i === 'X' || i === '/' || i === '+' || i === '-' ? true : false
+const isFunc = i => i === 'C' || i === 'AC' ? true : false
 const emptyElementsAtEnd = (a, b) => a === undefined ? -1 : 0
 
 
@@ -14,8 +15,7 @@ function numberSetOnClick() {
     const inputNumber = document.querySelectorAll('.number')
     inputNumber.forEach( numKey => {
         numKey.onclick = () => {
-            calculator.displayArray.push(numKey.innerHTML)
-            updateDisplay()
+            numberHandler(numKey.innerHTML)
         }
     })
 }
@@ -38,6 +38,21 @@ function operationSetOnClick() {
     })
 }
 
+function keySetOnPress() {
+    document.onkeydown = event => {
+        let key = event.key;
+        if(!isNaN(key)) {
+            numberHandler(key)
+        } else if(isFunc(key)) {
+            funcHandler(key)
+        } else if(key === '/' || key === '*' || key === '-' || key === '+' || key === '=' || key === 'Enter') {
+            if(key === '*') key = 'X'
+            if(key === 'Enter') key = '='
+            operationHandler(key)
+        }
+    }
+}
+
 /* View */
 
 function funcHandler(type) {
@@ -55,7 +70,7 @@ function displayThis(value) {
 }
 
 function resetAndDisplay(value) {
-    calculator.displayArray = []
+    calculator.displayArray = [value]
     displayThis(value)
 }
 
@@ -65,6 +80,11 @@ function updateDisplay() {
 }
 
 /* Logic */
+
+function numberHandler(num) {
+    calculator.displayArray.push(num)
+    updateDisplay()
+}
 
 function operationHandler(operation) {
     if(operation !== '=' && operation !== '%') {
@@ -91,8 +111,12 @@ function calculate() {
     const arrayToCalculate = stringArray.split(' ')
     try {
         const result = calcRecursive(arrayToCalculate)
-        resetAndDisplay(result)
-        console.log(result)
+        if(isNaN(result)) {
+            resetCalculator()
+            displayThis('Error!')
+        } else {
+            resetAndDisplay(result)
+        }
     } catch (error) {
         displayThis('Error!')   
     }
@@ -102,7 +126,6 @@ function calcRecursive(arr) {
     do {
         if(arr.includes('/') || arr.includes('X')) {
             calculateDivisionAndMultiplication(arr)
-            console.log(arr)
         } else if(arr.includes('+') || arr.includes('-')) {
             calculatePlusAndMinus(arr)
         }
@@ -179,6 +202,7 @@ function main() {
     numberSetOnClick()
     funcSetOnClick()
     operationSetOnClick()
+    keySetOnPress()
 }
 
 main()
